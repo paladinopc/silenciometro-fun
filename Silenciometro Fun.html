@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Silenciometro Fun</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bungee&family=Outfit:wght@400;600&display=swap">
+<style>
+:root{--bg:#f3efe6;--ink:#1b1630;--card:#fff;--mut:#5d5675;--acc:#ff3d6e;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#15112a;--ink:#f4f0ff;--card:#221c40;--mut:#aaa2cc}}
+:root[data-theme="dark"]{--bg:#15112a;--ink:#f4f0ff;--card:#221c40;--mut:#aaa2cc}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.5 Outfit,system-ui,sans-serif}
+header{padding:48px 20px 24px;text-align:center}
+h1{font:400 clamp(34px,8vw,80px)/1 Bungee,Impact,sans-serif;margin:0;letter-spacing:.02em}
+h1 span{display:inline-block;transform:rotate(calc(-3deg + var(--tx,0)*5deg)) translateX(calc(var(--tx,0)*8px));transition:transform .2s;background:var(--acc);color:#fff;padding:0 .2em;margin-left:.1em;border-radius:6px}
+header p{color:var(--mut);margin:14px 0 20px}
+.tools{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+input{font:inherit;padding:10px 16px;border-radius:999px;border:2px solid var(--ink);background:var(--card);color:var(--ink);width:min(320px,100%)}
+input:focus-visible,a:focus-visible,button:focus-visible{outline:3px solid var(--acc);outline-offset:3px}
+button{font:600 15px Outfit,sans-serif;padding:10px 16px;border-radius:999px;border:2px solid var(--ink);background:var(--card);color:var(--ink);cursor:pointer}
+button[aria-pressed=true]{background:var(--ink);color:var(--bg)}
+main{max-width:1200px;margin:0 auto;padding:12px 20px 60px}
+h2{font:400 22px Bungee,sans-serif;margin:34px 0 14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:16px}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;background:radial-gradient(520px circle at var(--gx,50%) var(--gy,25%),color-mix(in srgb,var(--acc) 24%,transparent),transparent 70%)}
+header,main{position:relative;z-index:1}
+a.card{display:block;position:relative;text-decoration:none;color:inherit;background:var(--card);border-radius:14px;overflow:hidden;border:2px solid var(--ink);opacity:0;transform:perspective(700px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) translateY(var(--ty,0px));transition:transform .18s ease-out,box-shadow .2s}
+a.card.in{opacity:1;animation:pop .55s cubic-bezier(.2,1.4,.4,1) backwards;animation-delay:calc(var(--i,0)*35ms)}
+@keyframes pop{from{opacity:0;transform:translateY(40px) scale(.8) rotate(-4deg)}}
+a.card:before{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;opacity:0;transition:opacity .2s;background:radial-gradient(circle at var(--mx,50%) var(--my,50%),rgba(255,255,255,.4),transparent 55%)}
+a.card:hover:before{opacity:1}
+a.card:active{transform:perspective(700px) scale(.96)}
+.rip{position:absolute;width:20px;height:20px;margin:-10px;border-radius:50%;background:rgba(255,255,255,.55);pointer-events:none;z-index:3;transform:scale(0);animation:rip .6s ease-out forwards}
+@keyframes rip{to{transform:scale(16);opacity:0}}
+h2{transform-origin:left;animation:hin .5s ease-out backwards}
+@keyframes hin{from{opacity:0;transform:translateX(-20px)}}
+button{transition:transform .15s,background .2s,color .2s}
+button:hover{transform:translateY(-2px) rotate(-1.5deg)}
+button:active{transform:scale(.93)}
+a.card:hover{--ty:-6px;box-shadow:7px 7px 0 var(--acc)}
+.pic img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .4s}
+a.card:hover .pic img{transform:scale(1.12)}
+.pic i{transition:transform .3s cubic-bezier(.2,1.6,.4,1)}
+a.card:hover .pic i{transform:scale(1.25) rotate(-8deg)}
+.pic{aspect-ratio:4/3;display:grid;place-items:center;position:relative;overflow:hidden}
+.pic i{font-style:normal;font-size:64px;filter:drop-shadow(0 4px 0 rgba(0,0,0,.3))}
+.pic b{position:absolute;left:8px;bottom:6px;font:400 11px Bungee,sans-serif;color:#fff;opacity:.85}
+.pic:after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(0,0,0,.12) 0 2px,transparent 2px 4px)}
+.t{padding:10px 12px;font-weight:600;line-height:1.25}
+.t small{display:block;color:var(--mut);font-weight:400;font-size:12px}
+.empty{display:none;text-align:center;color:var(--mut);padding:40px}
+@media (prefers-reduced-motion:reduce){*,*:before{animation:none!important;transition:none!important}a.card{opacity:1}}
+</style>
+</head>
+<body>
+<header>
+<h1>Silenciometro<span>Fun</span></h1>
+<p>Todos os jogos num só lugar. Clique na capa e jogue.</p>
+<div class="tools">
+<input id="q" type="search" placeholder="Buscar jogo..." aria-label="Buscar jogo">
+<span id="cats" class="tools"></span>
+</div>
+</header>
+<main id="m"></main>
+<p class="empty" id="e">Nenhum jogo encontrado. Tente outro nome.</p>
+<script>
+var G=[
+["BO1 Zombies","https://vel.gg/bo1z","Zombies","🧟","#7a1f1f,#1c0b0b","BO1"],
+["Moon","https://moon-zombies.pages.dev","Zombies","🌙","#2c3e6b,#080b1a","MOON"],
+["Kino der Toten","https://kino-der-toten.pages.dev","Zombies","🎬","#6b5a2c,#1a1408","KINO"],
+["BO3 Cheese Cube","https://cheese-cube.pages.dev","Zombies","🧀","#d9a50f,#5a3b00","BO3"],
+["Black Ops 2","https://vibeslops.luckeysystems.com","Tiro","🎯","#444b57,#0f1115","BO2"],
+["Modern Warfare 2","https://ovz-game-production.up.railway.app","Tiro","🪖","#4b5a3a,#12170c","MW2"],
+["Skate 3","https://skate.aaddpp.lol","Skate","🛹","#ff7a1a,#7a1f00","SKATE 3"],
+["Skate Rust","https://global-terror.net","Skate","🛼","#a8481f,#2b1006","RUST"],
+["CS Surf","https://surfd.net","Tiro","🏄","#1f8fd1,#06243d","SURF"],
+["Halo CE","https://mitchellhynes.com/halo","Tiro","🛡️","#3d7a3d,#0b210b","HALO"],
+["Halo CE mobile","https://hcemobile.com","Tiro","📱","#2f6b5a,#08201a","HALO MOBILE"],
+["PES 6","https://pes6.optijuegos.net","Esporte","⚽","#1f9a4d,#06331a","PES 6"],
+["GTA 5","https://web.archive.org/web/20261006055917/https://playgta5.com/","GTA","🚗","#e8a11a,#5c2a00","GTA V"],
+["GTA Vice City","https://joncodeofficial.github.io/gta-vice-city-wasm","GTA","🌴","#ff4fa3,#2a0a5c","VICE CITY"],
+["The Simpsons: Hit & Run","https://shar-wasm.cjoseph.workers.dev/?skipmovie","Aventura","🍩","#ffd51f,#c46a00","SIMPSONS"],
+["Quake 1","https://q1.pieter.com","Tiro","🔥","#6b4a2a,#150d06","QUAKE"],
+["Quake 2","https://q2.pieter.com","Tiro","⚙️","#4a5663,#0d1014","QUAKE II"],
+["Quake 3","https://q3.pieter.com","Tiro","💥","#a32b2b,#1c0505","QUAKE III"],
+["Return to Castle Wolfenstein","https://rtcw.pieter.com","Tiro","🏰","#59595f,#101013","RTCW"],
+["Unreal Tournament","https://ut.pieter.com","Tiro","🏆","#2a6bd1,#080f33","UT"],
+["Half Life","https://pixelsuft.github.io/hl/","Tiro","🔶","#e8731a,#3b1500","HL"],
+["Half Life / CS 1.6","https://x8bitrain.github.io/webXash/","Tiro","💣","#b8862b,#2e1f06","CS 1.6"],
+["Diablo","https://johnimril.github.io/diablo_web/","RPG","😈","#8f1d1d,#0a0202","DIABLO"],
+["Hedgewars","https://webwars.link","Estratégia","🦔","#3fa84a,#0d3a14","HEDGEWARS"],
+["Mais GTA / Minecraft","https://wasmarcade.com/Fan","Mais jogos","⛏️","#4a9b3a,#2a1a0a","MAIS"]
+];
+var m=document.getElementById("m"),q=document.getElementById("q"),cats=document.getElementById("cats"),cur="Todos";
+var names=["Todos"].concat(G.map(function(g){return g[2]}).filter(function(c,i,a){return a.indexOf(c)===i}));
+names.forEach(function(n){var b=document.createElement("button");b.textContent=n;b.setAttribute("aria-pressed",n==="Todos");b.onclick=function(){cur=n;[].forEach.call(cats.children,function(x){x.setAttribute("aria-pressed",x===b)});draw()};cats.appendChild(b)});
+function esc(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;")}
+function draw(){
+var t=q.value.trim().toLowerCase(),h="",n=0;
+names.slice(1).forEach(function(c){
+if(cur!=="Todos"&&cur!==c)return;
+var l=G.filter(function(g){return g[2]===c&&g[0].toLowerCase().indexOf(t)>-1});
+if(!l.length)return;n+=l.length;
+h+="<h2>"+esc(c)+"</h2><div class='grid'>"+l.map(function(g){
+var k=g[4].split(",");
+return "<a class='card' href='"+g[1]+"' target='_blank' rel='noopener noreferrer'><div class='pic' style='background:radial-gradient(circle at 30% 20%,"+k[0]+","+k[1]+")'><img src='"+src(g[0])+"' alt='' loading='lazy' onload='this.nextSibling.style.display=\"none\"' onerror='this.remove()'><i>"+g[3]+"</i><b>"+esc(g[5])+"</b></div><div class='t'>"+esc(g[0])+"</div></a>"}).join("")+"</div>"});
+m.innerHTML=h;fx();document.getElementById("e").style.display=n?"none":"block"}
+function src(n){var w=n.split(/[^A-Za-z0-9]+/).filter(Boolean);return "icons/"+w.map(function(x,i){return x.charAt(0)[i?"toUpperCase":"toLowerCase"]()+x.slice(1)}).join("")+".png"}
+var rm=matchMedia("(prefers-reduced-motion:reduce)").matches,io=window.IntersectionObserver&&new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target)}})},{threshold:.1});
+function fx(){[].forEach.call(m.querySelectorAll("a.card"),function(c,i){c.style.setProperty("--i",i%8);if(io&&!rm)io.observe(c);else c.classList.add("in")})}
+var R=document.documentElement;
+addEventListener("pointermove",function(e){R.style.setProperty("--gx",e.clientX+"px");R.style.setProperty("--gy",e.clientY+"px");R.style.setProperty("--tx",(e.clientX/innerWidth-.5)*2)});
+m.addEventListener("pointermove",function(e){if(rm)return;var c=e.target.closest("a.card");if(!c)return;var r=c.getBoundingClientRect(),x=(e.clientX-r.left)/r.width,y=(e.clientY-r.top)/r.height;c.style.setProperty("--ry",((x-.5)*16)+"deg");c.style.setProperty("--rx",((.5-y)*16)+"deg");c.style.setProperty("--mx",x*100+"%");c.style.setProperty("--my",y*100+"%")});
+m.addEventListener("pointerout",function(e){var c=e.target.closest("a.card");if(c){c.style.setProperty("--rx","0deg");c.style.setProperty("--ry","0deg")}});
+m.addEventListener("pointerdown",function(e){var c=e.target.closest("a.card");if(!c)return;var r=c.getBoundingClientRect(),s=document.createElement("span");s.className="rip";s.style.left=e.clientX-r.left+"px";s.style.top=e.clientY-r.top+"px";c.appendChild(s);setTimeout(function(){s.remove()},650)});
+q.oninput=draw;draw();
+</script>
+</body>
+</html>
